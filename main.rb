@@ -42,5 +42,9 @@ User.create(name:"okazaki", age:10)
 # 別の書き方
 # pp User.select("id, name, age").where("age <= 20").or(User.select("id, name,
 #    age").where("age >= 30"))
-# さらに別の書き方
-pp User.where("age <= 20").or(User.where("age >= 30")).select("id, name, age")
+# # さらに別の書き方
+# pp User.where("age <= 20").or(User.where("age >= 30")).select("id, name, age")
+
+# NOT
+# NOT検索
+pp User.select("id, name, age").where.not(id: 3)
