@@ -24,9 +24,14 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-#Where
+# Where
 # 値を絞って検索、20..29はrubyの範囲オブジェクト
-pp User.select("id, name, age").where(age:20..29)
-# 値を指定して検索
-pp User.select("id, name, age").where(age: [19,24])
+# pp User.select("id, name, age").where(age:20..29)
+# # 値を指定して検索
+# pp User.select("id, name, age").where(age: [19,24])
 
+# AND
+# AND検索、条件を指定する方法
+pp User.select("id, name, age").where("age >= 20").where("age < 30")
+# 同じ値ならこの書き方も可能
+pp User.select("id, name, age").where("age >= 20 and age < 30")
