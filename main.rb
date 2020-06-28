@@ -2,15 +2,10 @@ require 'active_support/all'
 require "active_record"
 # ppはプリティープリント、オブジェクトをわかりやすく表現するrubyのライブラリ
 require 'pp'
-# どういったSQLが発行されているか確認するライブラリ？
-require 'logger'
 
 # 時間の設定、決まり文句ぐらいで覚える
 Time.zone_default = Time.find_zone! 'Tokyo'
 ActiveRecord::Base.default_timezone = :local
-
-# 引数に出力先を書く
-ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 # DBの読み込み
 ActiveRecord::Base.establish_connection(
@@ -21,11 +16,21 @@ ActiveRecord::Base.establish_connection(
 class User < ActiveRecord::Base
 end
 
-# insert
-# ブロックを使ったインサート方法
-user = User.new do |u|
-  u.name = "sato"
-  u.age = 19
-end
-user.save
+User.delete_all
 
+User.create(name:"tanaka", age:19)
+User.create(name:"takahashi", age:12)
+User.create(name:"murata", age:24)
+User.create(name:"suzuki", age:77)
+User.create(name:"okazaki", age:10)
+
+# レコードをすべて抽出
+pp User.all
+# 表示したいレコードを選択することが可能
+pp User.select("id, name, age").all
+# # 最初のレコードを抽出する方法
+pp User.select("id, name, age").first
+# 最後のレコードを抽出する方法
+pp User.select("id, name, age").last
+# 最初の3件を抽出する方法
+pp User.select("id, name, age").first(3)
