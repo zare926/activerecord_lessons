@@ -24,27 +24,16 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-# Where
-# 値を絞って検索、20..29はrubyの範囲オブジェクト
-# pp User.select("id, name, age").where(age:20..29)
-# # 値を指定して検索
-# pp User.select("id, name, age").where(age: [19,24])
+min = 20
+max = 30
 
-# AND
-# AND検索、条件を指定する方法
-# pp User.select("id, name, age").where("age >= 20").where("age < 30")
-# 同じ値ならこの書き方も可能
-# pp User.select("id, name, age").where("age >= 20 and age < 30")
+pp User.select("id, name, age").where("age >= #{min} and age < #{max}") # NG!!
 
-# OR
-# OR検索
-# pp User.select("id, name, age").where("age <= 20 or age >= 30")
-# 別の書き方
-# pp User.select("id, name, age").where("age <= 20").or(User.select("id, name,
-#    age").where("age >= 30"))
-# # さらに別の書き方
-# pp User.where("age <= 20").or(User.where("age >= 30")).select("id, name, age")
+# 直接変数を代入指定はいけないので?を使ったプレースホルダーを使う。
+pp User.select("id, name, age").where("age >= ? and age < ?", min,max)
 
-# NOT
-# NOT検索
-pp User.select("id, name, age").where.not(id: 3)
+# ハッシュで中身を渡す事も可能
+pp User.select("id, name, age").where("age >= :min and age < :max", {min: min,max:max})
+
+#LIKEを使ったプレースホルダーの使い方
+pp User.select("id, name, age").where("name like?" ,"%i")
