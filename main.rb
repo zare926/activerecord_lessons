@@ -14,6 +14,12 @@ ActiveRecord::Base.establish_connection(
 )
 
 class User < ActiveRecord::Base
+  # class method
+  def self.top(num)
+    select("id, name, age").order(:age).limit(num)
+  end
+  #scope
+  scope :top, ->(num) {select("id, name, age").order(:age).limit(num)}
 end
 
 User.delete_all
@@ -24,20 +30,5 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-# order
-# # 年齢の若い順
-# pp User.select("id, name, age").order("age")
-# # シンボルパターン
-# pp User.select("id, name, age").order(:age)
-
-# # 逆順に
-# pp User.select("id, name, age").order("age desc")
-# # シンボルパターン
-# pp User.select("id, name, age").order(age: :desc)
-
-# limit
-# limit使い方
-# pp User.select("id, name, age").order(:age).limit(3)
-
-# offset使い方
-pp User.select("id, name, age").order(:age).limit(3).offset(1)
+# pp User.top3
+pp User.top(2)
