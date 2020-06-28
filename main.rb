@@ -32,6 +32,15 @@ User.create(name:"okazaki", age:10)
 
 # AND
 # AND検索、条件を指定する方法
-pp User.select("id, name, age").where("age >= 20").where("age < 30")
+# pp User.select("id, name, age").where("age >= 20").where("age < 30")
 # 同じ値ならこの書き方も可能
-pp User.select("id, name, age").where("age >= 20 and age < 30")
+# pp User.select("id, name, age").where("age >= 20 and age < 30")
+
+# OR
+# OR検索
+# pp User.select("id, name, age").where("age <= 20 or age >= 30")
+# 別の書き方
+# pp User.select("id, name, age").where("age <= 20").or(User.select("id, name,
+#    age").where("age >= 30"))
+# さらに別の書き方
+pp User.where("age <= 20").or(User.where("age >= 30")).select("id, name, age")
