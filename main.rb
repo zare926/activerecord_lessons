@@ -25,13 +25,19 @@ User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
 # order
-# 年齢の若い順
-pp User.select("id, name, age").order("age")
-# シンボルパターン
-pp User.select("id, name, age").order(:age)
+# # 年齢の若い順
+# pp User.select("id, name, age").order("age")
+# # シンボルパターン
+# pp User.select("id, name, age").order(:age)
 
-# 逆順に
-pp User.select("id, name, age").order("age desc")
-# シンボルパターン
-pp User.select("id, name, age").order(age: :desc)
+# # 逆順に
+# pp User.select("id, name, age").order("age desc")
+# # シンボルパターン
+# pp User.select("id, name, age").order(age: :desc)
 
+# limit
+# limit使い方
+# pp User.select("id, name, age").order(:age).limit(3)
+
+# offset使い方
+pp User.select("id, name, age").order(:age).limit(3).offset(1)
