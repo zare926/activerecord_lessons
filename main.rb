@@ -13,18 +13,15 @@ ActiveRecord::Base.establish_connection(
   "database" => "./myapp.db"
 )
 
+# Association
+# User -> Comments
+
 class User < ActiveRecord::Base
-  before_destroy :print_before_msg
-  after_destroy :print_after_msg
+  has_many :comments
+end
 
-  protected
-    def print_before_msg
-      puts "#{self.name} will be deleted"
-    end
-
-    def print_after_msg
-      puts "#{self.name} deleted"
-    end
+class Comment < ActiveRecord::Base
+  belongs_to :user
 end
 
 User.delete_all
@@ -35,10 +32,20 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-# callback
+Comment.delete_all
+Comment.create(user_id:1, body: "hello-1")
+Comment.create(user_id:1, body: "hello-2")
+Comment.create(user_id:2, body: "hello-3")
 
-# delete, destroy
-# before_destroy
-# after_destroy
+user = User.includes(:comments).find(1)
 
-User.where("age >= 20").destroy_all
+# pp user.comments
+
+# user.comments.each do |c|
+#   puts "#{user.name}: #{c.body}"
+# end
+
+comments = Comment.includes(:user).all
+comments.each do |c|
+  puts "#{c.body} by #{c.user.name}"
+end
