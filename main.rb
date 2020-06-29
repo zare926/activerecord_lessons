@@ -31,15 +31,16 @@ User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
 # update
-# IDを指定して値を更新したい時
-User.update(1,age: 50)
-# 更新対象をwhereで探す場合
-User.where(name: "tanaka").update(age:60)
-# 複数のフィールドを変える場合
-User.where(name: "tanaka").update(age:70, name:"taguchi")
-# 複数のレコードを更新する場合
-User.where("age >= 20").update(age:80)
+# # IDを指定して値を更新したい時
+# User.update(1,age: 50)
+# # 更新対象をwhereで探す場合
+# User.where(name: "tanaka").update(age:60)
+# # 複数のフィールドを変える場合
+# User.where(name: "tanaka").update(age:70, name:"taguchi")
+# # 複数のレコードを更新する場合
+# User.where("age >= 20").update(age:80)
 
-
+# update_all
+User.where("age >= 20").update_all("age = age + 2")
 pp User.select("id, name, age").all
 
