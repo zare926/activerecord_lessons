@@ -14,13 +14,17 @@ ActiveRecord::Base.establish_connection(
 )
 
 class User < ActiveRecord::Base
-  # 通常のバリテーション
-  validates :name, presence: true
-  validates :age, presence: true
-  # 繋げてかける
-  validates :name,:age, presence: true
-  # 文字数などの制限
-  validates :name, length: { minimum: 3 }
+  before_destroy :print_before_msg
+  after_destroy :print_after_msg
+
+  protected
+    def print_before_msg
+      puts "#{self.name} will be deleted"
+    end
+
+    def print_after_msg
+      puts "#{self.name} deleted"
+    end
 end
 
 User.delete_all
@@ -31,12 +35,10 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-# Validation
+# callback
 
-user = User.new(name: nil, age: nil)
-# user.save!
+# delete, destroy
+# before_destroy
+# after_destroy
 
-# エラーコードをターミナルに出す場合
-if !user.save
-  pp user.errors.messages
-end
+User.where("age >= 20").destroy_all
