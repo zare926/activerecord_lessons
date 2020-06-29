@@ -30,19 +30,16 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-# find_or_create_by
+# update
+# IDを指定して値を更新したい時
+User.update(1,age: 50)
+# 更新対象をwhereで探す場合
+User.where(name: "tanaka").update(age:60)
+# 複数のフィールドを変える場合
+User.where(name: "tanaka").update(age:70, name:"taguchi")
+# 複数のレコードを更新する場合
+User.where("age >= 20").update(age:80)
 
-# 登録されているユーザーの場合は参照できる
-# user = User.find_or_create_by(name:"takahashi")
-# pp user
 
-# 登録されていないユーザーの場合は登録されるが、検索した値以外はnilになる
-# user = User.find_or_create_by(name:"yokota")
-# pp user
-
-# 検索した値以外を入力する場合はブロックを使う
-user = User.find_or_create_by(name:"yokota") do |u|
-  u.age = 18
-end
-pp user
+pp User.select("id, name, age").all
 
