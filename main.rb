@@ -14,12 +14,13 @@ ActiveRecord::Base.establish_connection(
 )
 
 class User < ActiveRecord::Base
-  # class method
-  # def self.top(num)
-  #   select("id, name, age").order(:age).limit(num)
-  # end
-  # #scope
-  # scope :top, ->(num) {select("id, name, age").order(:age).limit(num)}
+  # 通常のバリテーション
+  validates :name, presence: true
+  validates :age, presence: true
+  # 繋げてかける
+  validates :name,:age, presence: true
+  # 文字数などの制限
+  validates :name, length: { minimum: 3 }
 end
 
 User.delete_all
@@ -30,15 +31,12 @@ User.create(name:"murata", age:24)
 User.create(name:"suzuki", age:77)
 User.create(name:"okazaki", age:10)
 
-# delete 単にレコードを削除するだけなので、高速
-# delete 1件削除
-User.delete(1)
+# Validation
 
-# delete_all 全件削除
-User.where("age >= 25").delete_all
+user = User.new(name: nil, age: nil)
+# user.save!
 
-# destory　関連するオブジェクトを考慮してくれたり、処理の前に自動処理などの加える事もできるので、高機能だが低速
-# destroy 1件削除
-# destory_all　全件削除
-
-pp User.select("id, name, age").all
+# エラーコードをターミナルに出す場合
+if !user.save
+  pp user.errors.messages
+end
