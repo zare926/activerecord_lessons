@@ -17,7 +17,7 @@ ActiveRecord::Base.establish_connection(
 # User -> Comments
 
 class User < ActiveRecord::Base
-  has_many :comments
+  has_many :comments,dependent: :destroy
 end
 
 class Comment < ActiveRecord::Base
@@ -37,15 +37,5 @@ Comment.create(user_id:1, body: "hello-1")
 Comment.create(user_id:1, body: "hello-2")
 Comment.create(user_id:2, body: "hello-3")
 
-user = User.includes(:comments).find(1)
-
-# pp user.comments
-
-# user.comments.each do |c|
-#   puts "#{user.name}: #{c.body}"
-# end
-
-comments = Comment.includes(:user).all
-comments.each do |c|
-  puts "#{c.body} by #{c.user.name}"
-end
+User.find(1).destroy
+pp Comment.select("id, user_id, body").all
